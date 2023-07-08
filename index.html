@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Editor</title>
+    <link rel="icon"  type="image/x-icon" href="/code.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    
+    <div class="btn">
+        <button onclick= reset()>Reset Code</button>
+        
+        <button onclick=zen() >Zen Mode</button>
+        
+    </div> 
+    
+
+    <div class="container">
+      <div class="left">
+        <label> HTML</label>
+        <textarea id="html-code" onkeyup=run() ></textarea>
+
+        <label> CSS</label>
+        <textarea id="css-code" onkeyup=run()> </textarea>
+
+        <label> JavaScript</label>
+        <textarea id="js-code" onkeyup=run()> </textarea>
+
+      </div>
+
+      <div id="op">
+        <label >Output</label>
+        <iframe  id="output"></iframe>
+      </div>
+    </div>
+
+    
+  <script>
+    /* sets the code data from the local Storage of the browser*/
+
+    document.getElementById("html-code").innerHTML = localStorage.getItem("html");
+    document.getElementById("css-code").innerHTML = localStorage.getItem("css");
+    document.getElementById("js-code").innerHTML = localStorage.getItem("js");
+   
+    /*convert the text to html css and js and display*/
+    function run() 
+    {
+
+        let htmlcontent = document.getElementById("html-code").value;
+        let csscontent = document.getElementById("css-code").value;
+        let jscontent = document.getElementById("js-code").value;
+
+
+        let output = document.getElementById("output");
+
+        output.contentDocument.body.innerHTML = htmlcontent +"<style>" + csscontent + "</style>";
+        output.contentWindow.eval(jscontent);
+
+        /*storing the data in local storage*/
+        localStorage.setItem("html", htmlcontent);
+        localStorage.setItem("css", csscontent);   
+        localStorage.setItem("js", jscontent);
+
+
+    }
+
+    function zen(){
+        let element = document.getElementById("op");
+        element.classList.toggle("hide");
+    }
+
+    /* clearing the data from the local storage*/
+    function reset(){
+        location.reload();
+        localStorage.removeItem("html");
+        localStorage.removeItem("css");
+        localStorage.removeItem("js");
+    }
+    </script>
+  </body>
+  
+</html>
